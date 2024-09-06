@@ -11,30 +11,17 @@ app.get("/", (req, res) => {
 
 io.on("connection", (socket) => {
   console.log("a user connected");
+
   socket.on("disconnect", () => {
     console.log("user disconnected");
   });
-});
 
-io.on("connection", (socket) => {
   socket.on("chat message", (msg) => {
-    console.log("message: " + msg);
-  });
-});
-
-io.emit("some event", {
-  someProperty: "some value",
-  otherProperty: "other value",
-});
-
-io.on("connection", (socket) => {
-  socket.broadcast.emit("hi");
-});
-
-io.on("connection", (socket) => {
-  socket.on("chat message", (msg) => {
+    console.log("message: " + msg.username + " says: " + msg.text);
     io.emit("chat message", msg);
   });
+
+  socket.broadcast.emit("hi");
 });
 
 server.listen(3000, () => {

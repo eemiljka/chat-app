@@ -13,16 +13,77 @@
       #messages { list-style-type: none; margin: 0; padding: 0; }
       #messages > li { padding: 0.5rem 1rem; }
       #messages > li:nth-child(odd) { background: #efefef; }
+
+      .profile {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.profile-picture {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: gray;
+  margin-right: 10px;
+}
+
+.username {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 14px;
+}
     </style>
   </head>
   <body>
+    <div class="profile">
+      <div class="profile-picture"></div>
+      <input type="text" id="username" placeholder="Enter your username">
+      <button id="saveButton">Save</button>
+    </div>
     <ul id="messages"></ul>
     <form id="form" action="">
       <input id="input" autocomplete="off" /><button>Send</button>
+      
     </form>
     <script src="/socket.io/socket.io.js"></script>
     <script>
-        var socker = io();
+        var socket = io();
+
+        var messages = document.getElementById('messages');
+        var form = document.getElementById('form');
+        var input = document.getElementById('input');
+
+        form.addEventListener('submit', function(e) {
+          e.preventDefault();
+          if (input.value) {
+            socket.emit('chat message', input.value);
+            input.value = '';
+          }
+        });
+
+        socket.on('chat message', function(msg) {
+          var item = document.createElement('li');
+          item.textContent = msg;
+          messages.appendChild(item);
+          window.scrollTo(0, document.vody.scrollHeight);
+        });
+
+        var usernameInput = document.getElementById("username");
+var saveButton = document.getElementById("saveButton");
+
+saveButton.addEventListener("click", function () {
+  var username = usernameInput.value;
+
+  var usernameDisplay = document.createElement("div");
+  usernameDisplay.innerHTML = username;
+  usernameDisplay.classList.add("username");
+  document.querySelector(".profile").appendChild(usernameDisplay);
+  localStorage.setItem("username", username);
+
+});
     </script>
   </body>
 </html>

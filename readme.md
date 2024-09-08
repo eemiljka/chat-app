@@ -2,7 +2,7 @@
 
 ## Starting the app locally
 
-We can see two users disconnecting to the app.
+We can see two users connecting to the app.
 ![Starting server](./images/start.png)
 
 ## Nicknames / Usernames
